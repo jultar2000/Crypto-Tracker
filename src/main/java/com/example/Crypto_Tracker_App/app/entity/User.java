@@ -1,9 +1,9 @@
-package com.example.Crypto_Tracker_App.user.entity;
+package com.example.Crypto_Tracker_App.app.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.Instant;
 
 @Entity
 @Setter
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "userr")
 public class User {
 
     @Id
@@ -26,4 +26,14 @@ public class User {
 
     @NotBlank(message = "Email is required")
     private String email;
+
+    private String name;
+
+    private String surname;
+
+    private int age;
+
+    private Instant created;
+
+    private boolean authenticated;
 }
