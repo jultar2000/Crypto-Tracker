@@ -1,7 +1,7 @@
 package com.example.Crypto_Tracker_App.app.service;
 
 import com.example.Crypto_Tracker_App.app.entity.VerificationEmail;
-import com.example.Crypto_Tracker_App.app.exceptions.MailSendException;
+import com.example.Crypto_Tracker_App.app.exceptions.AppException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
@@ -32,7 +32,7 @@ public class MailService {
             log.info("Activation email sent!");
         } catch (MailException e) {
             log.error("Exception occurred when sending mail", e);
-            throw new MailSendException("Exception when sending mail to " + verificationEmail.getToEmail(), e);
+            throw new AppException("Exception when sending mail to " + verificationEmail.getToEmail(), e);
         }
     }
 }

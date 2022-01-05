@@ -1,11 +1,15 @@
 package com.example.Crypto_Tracker_App.app.service;
 
+import com.example.Crypto_Tracker_App.app.dto.LoginUserRequest;
 import com.example.Crypto_Tracker_App.app.entity.VerificationEmail;
 import com.example.Crypto_Tracker_App.app.entity.User;
 import com.example.Crypto_Tracker_App.app.entity.VerificationToken;
+import com.example.Crypto_Tracker_App.app.exceptions.AppException;
 import com.example.Crypto_Tracker_App.app.repository.UserRepository;
 import com.example.Crypto_Tracker_App.app.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +29,15 @@ public class UserService {
 
     private final MailService mailService;
 
+    private final AuthenticationManager authenticationManager;
+
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenRepository verificationTokenRepository, MailService mailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenRepository verificationTokenRepository, MailService mailService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationTokenRepository = verificationTokenRepository;
         this.mailService = mailService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Transactional
@@ -38,7 +45,7 @@ public class UserService {
         userRepository.save(user);
         String token = generateVerificationToken(user);
         mailService.sendMail(new VerificationEmail("Activate acccount", user.getEmail(),
-                "http//localhost:8084/api/auth/verification/" + token));
+                "http://localhost:8080/api/auth/verification/" + token));
     }
 
     public String generateVerificationToken(User user) {
@@ -51,6 +58,27 @@ public class UserService {
 
         verificationTokenRepository.save(verificationToken);
         return token;
+    }
+
+    public void verifyAccount(String token) {
+        Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
+        verificationToken.orElseThrow(() -> new AppException("Invalid Token"));
+        registerUser(verificationToken.get());
+    }
+
+    @Transactional
+    public void registerUser(VerificationToken verificationToken) {
+        String username = verificationToken.getUser().getUsername();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException("User: " + username + " not found."));
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
+
+    public void login(LoginUserRequest loginUserRequest) {
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken
+                        (loginUserRequest.getUsername(), loginUserRequest.getPassword()));
     }
 
     @Transactional
