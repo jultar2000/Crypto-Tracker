@@ -1,14 +1,18 @@
 package com.example.Crypto_Tracker_App.app.controller;
 
-import com.example.Crypto_Tracker_App.app.dto.LoginUserRequest;
-import com.example.Crypto_Tracker_App.app.dto.RegisterUserRequest;
+
+import com.example.Crypto_Tracker_App.app.entity.User;
 import com.example.Crypto_Tracker_App.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -18,24 +22,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody RegisterUserRequest registerUserRequest){
-        userService.signup(RegisterUserRequest.dtoToEntityMapper(registerUserRequest));
-        return ResponseEntity.ok("Registration successful");
+    @GetMapping
+    public ResponseEntity<List<User>> getUsers(){
+        List<User> all = userService.findAll();
+        return ResponseEntity.ok(all);
     }
-
-    @GetMapping("/verification/{token}")
-    public ResponseEntity<String> verifyAccount(@PathVariable("token") String token){
-        userService.verifyAccount(token);
-        return ResponseEntity.ok("Account Verified");
-    }
-
-    @PostMapping("/login")
-    public void login(@RequestBody LoginUserRequest loginUserRequest){
-        userService.login(loginUserRequest);
-
-    }
-
-
-
 }

@@ -76,9 +76,9 @@ public class UserService {
     }
 
     public void login(LoginUserRequest loginUserRequest) {
-        authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken
-                        (loginUserRequest.getUsername(), loginUserRequest.getPassword()));
+//        authenticationManager
+//                .authenticate(new UsernamePasswordAuthenticationToken
+//                        (loginUserRequest.getUsername(), loginUserRequest.getPassword()));
     }
 
     @Transactional
