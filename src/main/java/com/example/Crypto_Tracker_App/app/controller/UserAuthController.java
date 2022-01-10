@@ -1,5 +1,6 @@
 package com.example.Crypto_Tracker_App.app.controller;
 
+import com.example.Crypto_Tracker_App.app.dto.AuthUserResponse;
 import com.example.Crypto_Tracker_App.app.dto.LoginUserRequest;
 import com.example.Crypto_Tracker_App.app.dto.RegisterUserRequest;
 import com.example.Crypto_Tracker_App.app.service.UserService;
@@ -31,11 +32,7 @@ public class UserAuthController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginUserRequest loginUserRequest){
-        userService.login(loginUserRequest);
-
+    public AuthUserResponse login(@RequestBody LoginUserRequest loginUserRequest){
+        return userService.login(loginUserRequest);
     }
-
-
-
 }

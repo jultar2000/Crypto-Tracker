@@ -1,5 +1,6 @@
 package com.example.Crypto_Tracker_App.app.service;
 
+import com.example.Crypto_Tracker_App.app.dto.AuthUserResponse;
 import com.example.Crypto_Tracker_App.app.dto.LoginUserRequest;
 import com.example.Crypto_Tracker_App.app.entity.VerificationEmail;
 import com.example.Crypto_Tracker_App.app.entity.User;
@@ -7,13 +8,17 @@ import com.example.Crypto_Tracker_App.app.entity.VerificationToken;
 import com.example.Crypto_Tracker_App.app.exceptions.AppException;
 import com.example.Crypto_Tracker_App.app.repository.UserRepository;
 import com.example.Crypto_Tracker_App.app.repository.VerificationTokenRepository;
+import com.example.Crypto_Tracker_App.app.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,13 +36,16 @@ public class UserService {
 
     private final AuthenticationManager authenticationManager;
 
+    private final JwtProvider jwtProvider;
+
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenRepository verificationTokenRepository, MailService mailService, AuthenticationManager authenticationManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenRepository verificationTokenRepository, MailService mailService, AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationTokenRepository = verificationTokenRepository;
         this.mailService = mailService;
         this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
     }
 
     @Transactional
@@ -45,7 +53,7 @@ public class UserService {
         userRepository.save(user);
         String token = generateVerificationToken(user);
         mailService.sendMail(new VerificationEmail("Activate acccount", user.getEmail(),
-                "http://localhost:8080/api/auth/verification/" + token));
+                "http://localhost:8084/api/auth/verification/" + token));
     }
 
     public String generateVerificationToken(User user) {
@@ -75,10 +83,18 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void login(LoginUserRequest loginUserRequest) {
-//        authenticationManager
-//                .authenticate(new UsernamePasswordAuthenticationToken
-//                        (loginUserRequest.getUsername(), loginUserRequest.getPassword()));
+    public AuthUserResponse login(LoginUserRequest loginUserRequest) {
+        Authentication authenticate =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+                        (loginUserRequest.getUsername(), loginUserRequest.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        String token = jwtProvider.generateToken(authenticate);
+        return AuthUserResponse.builder()
+                .authenticationToken(token)
+                .expiresAt(Instant.now().plusSeconds(jwtProvider.getExpirationTime()))
+                .username(loginUserRequest.getUsername())
+                .build();
     }
 
     @Transactional

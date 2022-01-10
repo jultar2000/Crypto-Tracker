@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
-public class UserController {
+@RequestMapping("/api/crypto")
+public class CryptoController {
 
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public CryptoController(UserService userService) {
         this.userService = userService;
     }
 
@@ -27,4 +27,18 @@ public class UserController {
         List<User> all = userService.findAll();
         return ResponseEntity.ok(all);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
