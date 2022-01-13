@@ -1,7 +1,5 @@
 package com.example.Crypto_Tracker_App.app.dto;
 
-
-import com.example.Crypto_Tracker_App.app.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,10 +13,4 @@ public class LoginUserRequest {
 
     private String password;
 
-    public static User dtoToEntityMapper(RegisterUserRequest registerUserRequest){
-        return User.builder()
-                .username(registerUserRequest.getUsername())
-                .password(registerUserRequest.getPassword())
-                .build();
-    }
 }

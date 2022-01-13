@@ -2,7 +2,6 @@ package com.example.Crypto_Tracker_App.app.service;
 
 import com.example.Crypto_Tracker_App.app.dto.GetCoinsRequest;
 import com.example.Crypto_Tracker_App.app.entity.CryptoCoin;
-import com.example.Crypto_Tracker_App.app.entity.User;
 import com.example.Crypto_Tracker_App.app.repository.CryptoCoinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,6 @@ public class CryptoCoinService {
 
         for (String coin : request.getNames()) {
             coin = "%2C" + coin;
-            System.out.println(coin);
             sb.append(coin);
         }
 
@@ -50,10 +48,13 @@ public class CryptoCoinService {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
         while ((output = br.readLine()) != null) {
             sb.append(output);
         }
+
+        while()
+
+
         return sb.toString();
     }
 

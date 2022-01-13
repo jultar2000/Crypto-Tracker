@@ -50,10 +50,14 @@ public class UserService {
 
     @Transactional
     public void signup(User user) {
-        userRepository.save(user);
-        String token = generateVerificationToken(user);
-        mailService.sendMail(new VerificationEmail("Activate acccount", user.getEmail(),
-                "http://localhost:8084/api/auth/verification/" + token));
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new AppException("Username" + user.getUsername() + "already taken!");
+        } else {
+            userRepository.save(user);
+            String token = generateVerificationToken(user);
+            mailService.sendMail(new VerificationEmail("Activate acccount", user.getEmail(),
+                    "http://localhost:8084/api/auth/verification/" + token));
+        }
     }
 
     public String generateVerificationToken(User user) {
