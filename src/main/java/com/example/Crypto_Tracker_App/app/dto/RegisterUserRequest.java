@@ -10,11 +10,8 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterUserRequest {
-
     private String username;
-
     private String password;
-
     private String email;
 
     public static User dtoToEntityMapper(RegisterUserRequest registerUserRequest){

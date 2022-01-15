@@ -32,7 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         RequestMatcher  ignoredPaths = new AntPathRequestMatcher("/api/auth/**");
         return ignoredPaths.matches(request);
     }

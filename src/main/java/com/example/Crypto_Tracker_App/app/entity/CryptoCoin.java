@@ -2,17 +2,20 @@ package com.example.Crypto_Tracker_App.app.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "crypto_coin")
+@Entity
+@Table(name = "coin")
 public class CryptoCoin {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long Id;
+
     private String coinName;
 }

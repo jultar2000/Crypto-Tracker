@@ -4,6 +4,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Setter
@@ -36,4 +37,8 @@ public class User {
     private Instant created;
 
     private boolean enabled;
+
+    @ManyToMany
+    @JoinColumn(name = "coins")
+    List<CryptoCoin> cryptoCoins;
 }
