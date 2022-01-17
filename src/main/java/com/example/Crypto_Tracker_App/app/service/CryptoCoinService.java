@@ -4,6 +4,9 @@ import com.example.Crypto_Tracker_App.app.entity.CryptoCoin;
 import com.example.Crypto_Tracker_App.app.exceptions.AppException;
 import com.example.Crypto_Tracker_App.app.repository.CryptoCoinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +29,7 @@ public class CryptoCoinService {
 
     public String getSpecificCoins(List<String> coinNames) throws IOException {
         StringBuilder sb = new StringBuilder();
-        if(coinNames.isEmpty()){
+        if (coinNames.isEmpty()) {
             throw new AppException("List of requested coins is empty!");
         }
         for (String coin : coinNames) {
@@ -67,6 +70,7 @@ public class CryptoCoinService {
     private BufferedReader sendRequest(URL url) throws IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
+
         return new BufferedReader(new InputStreamReader(con.getInputStream()));
     }
 
@@ -85,6 +89,39 @@ public class CryptoCoinService {
         return sb.toString();
     }
 
+    public void updateDatabase() throws IOException, JSONException {
+        JSONArray jsonarray = null;
+        String output;
+        String coinName;
+
+        URL url = new URL("https://api.coingecko.com/api/v3/coins/markets" +
+                "?vs_currency=usd" +
+                "&order=market_cap_desc" +
+                "&per_page=300&page=1" +
+                "&sparkline=false");
+
+        BufferedReader br = sendRequest(url);
+        while ((output = br.readLine()) != null) {
+            jsonarray = new JSONArray(output);
+        }
+        br.close();
+        if (jsonarray != null) {
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                coinName = jsonobject.getString("id");
+                saveWithName(coinName);
+            }
+        }
+    }
+    
+    @Transactional
+    public void saveWithName(String coinName){
+        CryptoCoin coin = CryptoCoin.builder()
+                .coinName(coinName)
+                .build();
+        cryptoCoinRepository.save(coin);
+    }
+
     @Transactional
     public void save(CryptoCoin cryptoCoin) {
         cryptoCoinRepository.save(cryptoCoin);
@@ -95,12 +132,15 @@ public class CryptoCoinService {
         cryptoCoinRepository.delete(cryptoCoin);
     }
 
+    public Optional<CryptoCoin> findCoin(String coinName) {
+        return cryptoCoinRepository.findByCoinName(coinName);
+    }
+
     public List<CryptoCoin> findAll() {
         return cryptoCoinRepository.findAll();
     }
 
-    public Optional<CryptoCoin> findUser(Long coinId) {
+    public Optional<CryptoCoin> findCoin(Long coinId) {
         return cryptoCoinRepository.findById(coinId);
     }
-
 }

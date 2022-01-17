@@ -12,7 +12,6 @@ import java.time.Instant;
 @AllArgsConstructor
 @Table(name = "token")
 public class VerificationToken {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

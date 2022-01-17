@@ -7,6 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 public class VerificationEmail {
     private String subject;
+
     private String toEmail;
+
     private String body;
 }

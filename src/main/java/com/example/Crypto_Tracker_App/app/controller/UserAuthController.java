@@ -20,19 +20,19 @@ public class UserAuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody RegisterUserRequest registerUserRequest){
+    public ResponseEntity<String> signup(@RequestBody RegisterUserRequest registerUserRequest) {
         userService.signup(RegisterUserRequest.dtoToEntityMapper(registerUserRequest));
         return ResponseEntity.ok("Registration successful");
     }
 
     @GetMapping("/verification/{token}")
-    public ResponseEntity<String> verifyAccount(@PathVariable("token") String token){
+    public ResponseEntity<String> verifyAccount(@PathVariable("token") String token) {
         userService.verifyAccount(token);
         return ResponseEntity.ok("Account Verified");
     }
 
     @PostMapping("/login")
-    public AuthUserResponse login(@RequestBody LoginUserRequest loginUserRequest){
+    public AuthUserResponse login(@RequestBody LoginUserRequest loginUserRequest) {
         return userService.login(loginUserRequest);
     }
 }

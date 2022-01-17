@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "coin")
 public class CryptoCoin {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
