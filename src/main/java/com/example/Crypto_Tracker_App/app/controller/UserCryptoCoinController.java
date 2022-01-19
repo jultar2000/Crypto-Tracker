@@ -7,7 +7,9 @@ import com.example.Crypto_Tracker_App.app.exceptions.AppException;
 import com.example.Crypto_Tracker_App.app.service.CryptoCoinService;
 import com.example.Crypto_Tracker_App.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -30,6 +32,7 @@ public class UserCryptoCoinController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<String> getUserCoins() throws IOException {
         User user = userService.getCurrentUser();
         List<String> stringList = new ArrayList<>();
@@ -40,7 +43,8 @@ public class UserCryptoCoinController {
     }
 
     @PutMapping("")
-    public ResponseEntity<String> addCoin(@RequestBody CoinRequest request) {
+    @PreAuthorize("hasAuthority('user:write')")
+    public ResponseEntity<Void> addCoin(@RequestBody CoinRequest request) {
         User user = userService.getCurrentUser();
         Optional<CryptoCoin> coin = cryptoCoinService.findCoin(request.coinName);
         if (coin.isEmpty()) {
@@ -55,6 +59,7 @@ public class UserCryptoCoinController {
     }
 
     @DeleteMapping
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<Void> deleteCoin(@RequestBody CoinRequest request) {
         User user = userService.getCurrentUser();
         Optional<CryptoCoin> coin = cryptoCoinService.findCoin(request.coinName);

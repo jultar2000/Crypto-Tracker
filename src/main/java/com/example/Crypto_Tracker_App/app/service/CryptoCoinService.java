@@ -36,7 +36,6 @@ public class CryptoCoinService {
             coin = "%2C" + coin;
             sb.append(coin);
         }
-
         URL url = new URL("https://api.coingecko.com/api/v3/simple/price" +
                 "?ids=" +
                 coinNames.get(0) +
@@ -46,16 +45,13 @@ public class CryptoCoinService {
                 "&include_24hr_vol=true" +
                 "&include_24hr_change=true" +
                 "&include_last_updated_at=true");
-
         sb.setLength(0);
         BufferedReader br = sendRequest(url);
-
         return readAndModifyOutput(sb, br);
     }
 
     public String getAllCoins() throws IOException {
         StringBuilder sb = new StringBuilder();
-
         URL url = new URL("https://api.coingecko.com/api/v3/coins/markets?" +
                 "vs_currency=usd" +
                 "&order=market_cap_desc" +
@@ -63,14 +59,12 @@ public class CryptoCoinService {
                 "&page=1" +
                 "&sparkline=false");
         BufferedReader br = sendRequest(url);
-
         return readAndModifyOutput(sb, br);
     }
 
     private BufferedReader sendRequest(URL url) throws IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
-
         return new BufferedReader(new InputStreamReader(con.getInputStream()));
     }
 
@@ -79,7 +73,6 @@ public class CryptoCoinService {
         while ((output = br.readLine()) != null) {
             sb.append(output);
         }
-
         Set<Character> values = new HashSet<>(Arrays.asList('{', '}', ','));
         for (int i = 0; i < sb.length(); i++) {
             if (values.contains(sb.charAt(i))) {
@@ -88,12 +81,11 @@ public class CryptoCoinService {
         }
         return sb.toString();
     }
-
+ 
     public void updateDatabase() throws IOException, JSONException {
         JSONArray jsonarray = null;
         String output;
         String coinName;
-
         URL url = new URL("https://api.coingecko.com/api/v3/coins/markets" +
                 "?vs_currency=usd" +
                 "&order=market_cap_desc" +

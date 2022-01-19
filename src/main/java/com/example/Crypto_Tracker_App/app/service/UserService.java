@@ -52,7 +52,7 @@ public class UserService {
     @Transactional
     public void signup(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new AppException("Username" + user.getUsername() + "already taken!");
+            throw new AppException("Username " + user.getUsername() + " already taken!");
         } else {
             userRepository.save(user);
             String token = generateVerificationToken(user);
@@ -92,7 +92,6 @@ public class UserService {
         Authentication authenticate =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
                         (loginUserRequest.getUsername(), loginUserRequest.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
         return AuthUserResponse.builder()

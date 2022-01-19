@@ -59,7 +59,7 @@ public class JwtProvider {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsernameFromToken(token);
+        String username = extractUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 

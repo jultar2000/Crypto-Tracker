@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        RequestMatcher  ignoredPaths = new AntPathRequestMatcher("/api/auth/**");
+        RequestMatcher ignoredPaths = new AntPathRequestMatcher("/api/auth/**");
         return ignoredPaths.matches(request);
     }
 
@@ -41,15 +41,12 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
         String jwt = getJwtFromRequest(request);
         String username = jwtProvider.extractUsernameFromToken(jwt);
         UserDetails userDetails = userDetailService.loadUserByUsername(username);
-
         if (StringUtils.hasText(jwt) && jwtProvider.validateToken(jwt, userDetails)) {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
                     null, userDetails.getAuthorities());
-
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

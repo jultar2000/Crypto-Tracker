@@ -5,6 +5,7 @@ import com.example.Crypto_Tracker_App.app.service.CryptoCoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -30,5 +31,12 @@ public class CryptoCoinController {
     public ResponseEntity<String> getSpecificCoins(@RequestBody CoinsRequest request) throws IOException {
         String coins = cryptoCoinService.getSpecificCoins(request.getNames());
         return ResponseEntity.ok(coins);
+    }
+
+    @PutMapping
+    @PreAuthorize("hasAuthority('db:update')")
+    public ResponseEntity<Void> updateDB() throws JSONException, IOException {
+        cryptoCoinService.updateDatabase();
+        return ResponseEntity.accepted().build();
     }
 }
