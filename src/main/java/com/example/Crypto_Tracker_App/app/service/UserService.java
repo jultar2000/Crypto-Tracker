@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.example.Crypto_Tracker_App.app.security.AppRole.ADMIN;
+import static com.example.Crypto_Tracker_App.app.security.AppRole.USER;
+
 @Service
 public class UserService {
 
@@ -85,6 +88,7 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("User: " + username + " not found."));
         user.setEnabled(true);
+        user.setRole(USER);
         userRepository.save(user);
     }
 

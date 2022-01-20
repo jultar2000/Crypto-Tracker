@@ -16,5 +16,8 @@ public class CryptoCoin {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
+    @Column(unique = true)
     private String coinName;
+
+
 }

@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
-import static com.example.Crypto_Tracker_App.app.security.AppRole.USER;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +24,6 @@ public class UserDetailService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User
                 (user.getUsername(), user.getPassword(),
                         user.isEnabled(), true, true,
-                        true, USER.getGrantedAuthorities());
+                        true, user.getRole().getGrantedAuthorities());
     }
 }

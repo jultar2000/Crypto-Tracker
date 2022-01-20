@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.example.Crypto_Tracker_App.app.security.AppRole.ADMIN;
 import static com.example.Crypto_Tracker_App.app.security.AppRole.USER;
 
 @EnableWebSecurity
@@ -32,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/**")
                 .permitAll()
                 .antMatchers("/api/coins/**").hasRole(USER.name())
+                .antMatchers("/api/management").hasRole(ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()

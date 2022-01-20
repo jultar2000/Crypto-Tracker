@@ -1,6 +1,8 @@
 package com.example.Crypto_Tracker_App.app.entity;
 
+import com.example.Crypto_Tracker_App.app.security.AppRole;
 import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
@@ -36,6 +38,8 @@ public class User {
     private Instant created;
 
     private boolean enabled;
+
+    AppRole role;
 
     @ManyToMany
     @JoinColumn(name = "coins")
