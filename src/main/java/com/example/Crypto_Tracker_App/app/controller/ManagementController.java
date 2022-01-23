@@ -1,6 +1,7 @@
 package com.example.Crypto_Tracker_App.app.controller;
 
 import com.example.Crypto_Tracker_App.app.service.CryptoCoinService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ public class ManagementController {
 
     private final CryptoCoinService cryptoCoinService;
 
+    @Autowired
     public ManagementController(CryptoCoinService cryptoCoinService) {
         this.cryptoCoinService = cryptoCoinService;
     }

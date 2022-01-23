@@ -126,6 +126,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public Optional<User> findUser(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public Optional<User> findUser(Long userID) {
         return userRepository.findById(userID);
     }

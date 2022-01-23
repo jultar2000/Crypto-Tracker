@@ -13,8 +13,8 @@ import static com.example.Crypto_Tracker_App.app.security.AppPermission.*;
 @AllArgsConstructor
 @Getter
 public enum AppRole {
-    USER(Sets.newHashSet(USER_WRITE)),
-    ADMIN(Sets.newHashSet(USER_READ_ALL, DB_UPDATE));
+    USER(Sets.newHashSet(USER_WRITE,USER_READ)),
+    ADMIN(Sets.newHashSet(READ_USER, USER_READ, DB_UPDATE));
 
     private final Set<AppPermission> permissions;
 

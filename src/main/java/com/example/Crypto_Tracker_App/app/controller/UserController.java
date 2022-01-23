@@ -1,6 +1,8 @@
 package com.example.Crypto_Tracker_App.app.controller;
 
 import com.example.Crypto_Tracker_App.app.dto.CoinRequest;
+import com.example.Crypto_Tracker_App.app.dto.GetUserResponse;
+import com.example.Crypto_Tracker_App.app.dto.UpdateProfileRequest;
 import com.example.Crypto_Tracker_App.app.entity.CryptoCoin;
 import com.example.Crypto_Tracker_App.app.entity.User;
 import com.example.Crypto_Tracker_App.app.exceptions.AppException;
@@ -18,20 +20,20 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/coins/user")
-public class UserCryptoCoinController {
+public class UserController {
 
     private final CryptoCoinService cryptoCoinService;
 
     private final UserService userService;
 
     @Autowired
-    public UserCryptoCoinController(CryptoCoinService cryptoCoinService, UserService userService) {
+    public UserController(CryptoCoinService cryptoCoinService, UserService userService) {
         this.cryptoCoinService = cryptoCoinService;
         this.userService = userService;
     }
 
     @GetMapping("")
-    @PreAuthorize("hasAuthority('user:write')")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<String> getUserCoins() throws IOException {
         User user = userService.getCurrentUser();
         List<String> stringList = new ArrayList<>();
@@ -39,6 +41,23 @@ public class UserCryptoCoinController {
                 stringList.add(cryptoCoin.getCoinName()));
         String coins = cryptoCoinService.getSpecificCoins(stringList);
         return ResponseEntity.ok(coins);
+    }
+
+    @GetMapping("/profile")
+    @PreAuthorize("hasAuthority('user:read')")
+    public ResponseEntity<GetUserResponse> getUser() {
+        User user = userService.getCurrentUser();
+        GetUserResponse getUserResponse = GetUserResponse.entityToDtoMapper(user);
+        return ResponseEntity.ok(getUserResponse);
+    }
+
+    @PutMapping("/update")
+    @PreAuthorize("hasAuthority('user:write')")
+    public ResponseEntity<Void> updateProfile(@RequestBody UpdateProfileRequest request){
+        User user = userService.getCurrentUser();
+        UpdateProfileRequest.dtoToEntityUpdater(request, user);
+        userService.save(user);
+        return ResponseEntity.accepted().build();
     }
 
     @PutMapping("")

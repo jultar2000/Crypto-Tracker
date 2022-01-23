@@ -22,12 +22,14 @@ public class CryptoCoinController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<String> getAllCoins() throws IOException {
         String coins = cryptoCoinService.getAllCoins();
         return ResponseEntity.ok(coins);
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<String> getSpecificCoins(@RequestBody CoinsRequest request) throws IOException {
         String coins = cryptoCoinService.getSpecificCoins(request.getNames());
         return ResponseEntity.ok(coins);

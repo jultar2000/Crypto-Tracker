@@ -1,15 +1,16 @@
 package com.example.Crypto_Tracker_App.app.dto;
 
 import com.example.Crypto_Tracker_App.app.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
+@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class RegisterUserRequest {
     private String username;
 

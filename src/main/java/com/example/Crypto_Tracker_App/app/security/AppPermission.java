@@ -6,7 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum AppPermission {
-    USER_READ_ALL("user:readAll"),
+    READ_USER("user:readUser"),
+    USER_READ("user:read"),
     USER_WRITE("user:write"),
     DB_UPDATE("db:update");
 
