@@ -2,7 +2,7 @@ package com.example.Crypto_Tracker_App.app.dto;
 
 import lombok.*;
 
-import java.time.Instant;
+import javax.validation.constraints.NotBlank;
 
 @Builder
 @Data
@@ -10,12 +10,9 @@ import java.time.Instant;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class AuthUserResponse {
-    private String authenticationToken;
-
+public class RefreshTokenRequest {
+    @NotBlank
     private String refreshToken;
-
-    private Instant expiresAt;
 
     private String username;
 }

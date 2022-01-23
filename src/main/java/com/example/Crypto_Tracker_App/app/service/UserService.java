@@ -2,6 +2,7 @@ package com.example.Crypto_Tracker_App.app.service;
 
 import com.example.Crypto_Tracker_App.app.dto.AuthUserResponse;
 import com.example.Crypto_Tracker_App.app.dto.LoginUserRequest;
+import com.example.Crypto_Tracker_App.app.dto.RefreshTokenRequest;
 import com.example.Crypto_Tracker_App.app.entity.VerificationEmail;
 import com.example.Crypto_Tracker_App.app.entity.User;
 import com.example.Crypto_Tracker_App.app.entity.VerificationToken;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.example.Crypto_Tracker_App.app.security.AppRole.ADMIN;
 import static com.example.Crypto_Tracker_App.app.security.AppRole.USER;
 
 @Service
@@ -42,14 +42,17 @@ public class UserService {
 
     private final JwtProvider jwtProvider;
 
+    private final RefreshTokenService refreshTokenService;
+
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenRepository verificationTokenRepository, MailService mailService, AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenRepository verificationTokenRepository, MailService mailService, AuthenticationManager authenticationManager, JwtProvider jwtProvider, RefreshTokenService refreshTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationTokenRepository = verificationTokenRepository;
         this.mailService = mailService;
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Transactional
@@ -92,16 +95,28 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public AuthUserResponse login(LoginUserRequest loginUserRequest) {
+    public AuthUserResponse login(LoginUserRequest request) {
         Authentication authenticate =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
-                        (loginUserRequest.getUsername(), loginUserRequest.getPassword()));
+                        (request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
         return AuthUserResponse.builder()
                 .authenticationToken(token)
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
                 .expiresAt(Instant.now().plusSeconds(jwtProvider.getExpirationTime()))
-                .username(loginUserRequest.getUsername())
+                .username(request.getUsername())
+                .build();
+    }
+
+    public AuthUserResponse refreshToken(RefreshTokenRequest request) {
+        refreshTokenService.validateRefreshToken(request.getRefreshToken());
+        String token = jwtProvider.generateTokenWithUsername(request.getUsername());
+        return AuthUserResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(request.getRefreshToken())
+                .expiresAt(Instant.now().plusSeconds(jwtProvider.getExpirationTime()))
+                .username(request.getUsername())
                 .build();
     }
 

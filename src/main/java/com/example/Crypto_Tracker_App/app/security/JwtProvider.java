@@ -32,6 +32,15 @@ public class JwtProvider {
                 .compact();
     }
 
+    public String generateTokenWithUsername(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(Date.from((Instant.now())))
+                .signWith(jwtSecretKey.getSecretKey())
+                .setExpiration(Date.from(Instant.now().plusSeconds(jwtSecretKey.getExpirationTime())))
+                .compact();
+    }
+
     private Claims extractAllClaims(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(jwtSecretKey.getSecretKey())
