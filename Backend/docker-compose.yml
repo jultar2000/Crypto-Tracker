@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  postgres-db:
+    image: "postgres"
+    #volumes:
+    # - db_volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=crypto_tracker_db
+    ports:
+      - 5432:5432
+    networks:
+      - net
+
+  crypto-tracker-app:
+    build: .
+    ports:
+      - "8084:80"
+    depends_on:
+      - postgres-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/crypto_tracker_db
+      - SPRING_DATASOURCE_USERNAME=
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - net
+networks:
+  net:
+
+
+
