@@ -6,8 +6,8 @@ services:
     #volumes:
     # - db_volume:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mama123
       - POSTGRES_DB=crypto_tracker_db
     ports:
       - 5432:5432
@@ -22,8 +22,8 @@ services:
       - postgres-db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/crypto_tracker_db
-      - SPRING_DATASOURCE_USERNAME=
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=mama123
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     networks:
       - net

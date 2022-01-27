@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "http-server -p 8084 -c-1"
+    "dev": "http-server -p 8085 -c-1"
   },
   "devDependencies": {
     "http-server": "0.12.3"

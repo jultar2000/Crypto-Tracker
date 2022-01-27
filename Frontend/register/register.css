@@ -1,0 +1,39 @@
+.main-container .username {
+    background: rgb(30, 32, 33);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    border-radius: 20px;
+    color: #e7e0e0;
+    margin-top: 1em;
+  }
+
+  .main-container .password {
+    background: rgb(30, 32, 33);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    border-radius: 20px;
+    color: #e7e0e0;
+  }
+
+  .main-container .email {
+    background: rgb(30, 32, 33);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    border-radius: 20px;
+    color: #e7e0e0;
+  }
+
+  .main-container .register {
+    padding: 1em;
+    background: rgb(30, 32, 33);
+    color: rgb(218, 204, 204);
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+  }
