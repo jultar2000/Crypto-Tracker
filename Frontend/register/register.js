@@ -24,11 +24,8 @@ function registerUser() {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             console.log("OK");
-        } else {
-          console.error("ERROR");
-        }
+        } 
     };
-    console.log(json);
 
     xhttp.open("POST", getBackendURL() + '/auth/signup', true);
     xhttp.setRequestHeader('Content-Type', 'application/json');

@@ -26,6 +26,7 @@ public class UserAuthController {
         this.refreshTokenService = refreshTokenService;
     }
 
+    @CrossOrigin
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterUserRequest registerUserRequest) {
         userService.signup(RegisterUserRequest.dtoToEntityMapper(registerUserRequest));
