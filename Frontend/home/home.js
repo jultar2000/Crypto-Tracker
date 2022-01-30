@@ -1,36 +1,26 @@
-import {getBackendURL} from '../utils/utils.js'
+import { getBackendURL } from '../utils/utils.js';
+
 
 window.addEventListener('load', () => {
-    setFunctionality();
+    getAllCoins();
 });
 
-function setFunctionality() {
-    document.getElementById('login-button').onclick = loginUser;
-}
-
-function loginUser() {
-    var username = document.getElementById('user-name').value;
-    var password = document.getElementById('pass').value;
-
-    
-    var data = {
-        "username": username,
-        "password": password
-      };
-
-    var json = JSON.stringify(data);
+function getAllCoins() {
 
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log("OK");
-        }
-    };
+        if (this.readyState === 4 && this.response === 200) {
 
-    xhttp.open("POST", getBackendURL() + '/auth/login', true);
+        }
+    }
+
+    xhttp.open("GET", getBackendURL() + '/coins');
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.send(json);
+    xhttp.send();
 }
+
+
+
 
 
 

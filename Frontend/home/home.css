@@ -1,31 +1,24 @@
 
-  .main-container .username {
-    background: rgb(30, 32, 33);
-    padding: 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    border-radius: 20px;
-    color: #e7e0e0;
-    margin-top: 1em;
+body {
+    justify-content: center;
+    align-items: start;
   }
 
-  .main-container .password {
-    background: rgb(30, 32, 33);
-    padding: 1em;
+.navigation-bar {
+    background: #0b0b0c;
+    padding: 1.5em;
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
-    border-radius: 20px;
-    color: #e7e0e0;
-  }
-
-  .main-container .login {
-    padding: 1em;
-    background: rgb(30, 32, 33);
-    color: rgb(218, 204, 204);
-    border: none;
     border-radius: 30px;
-    font-weight: 600;
+    box-shadow: 0 0 2em #848cb9;
   }
 
+.navigation-bar li {
+    display: inline-block;
+    color: rgb(218, 204, 204);
+    padding: 2px 150px;
+}
+
+.navigation-bar a {
+    color: rgb(218, 204, 204);
+}

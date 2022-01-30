@@ -1,21 +1,21 @@
 import {getBackendURL} from '../utils/utils.js';
+
 window.addEventListener('load', () => {
     setFunctionality();
 });
 
 function setFunctionality() {
-    document.getElementById('register-button').onclick = registerUser;
+    document.getElementById('login-button').onclick = loginUser;
 }
 
-function registerUser() {
+function loginUser() {
     var username = document.getElementById('user-name').value;
     var password = document.getElementById('pass').value;
-    var email = document.getElementById('email').value;
 
+    
     var data = {
         "username": username,
-        "password": password,
-        "email": email,
+        "password": password
       };
 
     var json = JSON.stringify(data);
@@ -23,14 +23,15 @@ function registerUser() {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            console.log("OK");
-        } 
+            window.location.href = "../home/home.html";
+        }
     };
 
-    xhttp.open("POST", getBackendURL() + '/auth/signup', true);
+    xhttp.open("POST", getBackendURL() + '/auth/login', true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send(json);
 }
+
 
 
 
