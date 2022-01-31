@@ -1,22 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <body>
+
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="home.css" />
         <link rel="stylesheet" href="../styles.css" />
         <script type="module" src="home.js" defer="defer"></script>
-      </head>
-    <div class = "main-container">
+    </head>
 
-      <nav class="navigation-bar">
-        <ul>
-          <li> <a href="../about/about.html">About</a> </li>
-          <li> <a href="home.html">Home</a></li>
-          <li> <a href="../tracker/tracker.html">Tracker</a></li>
-          <li> <a href="../account/account.html">Account</a></li>
-        </ul>
-      </nav>
+    <div class="main-container">
+
+        <nav class="navigation-bar">
+            <ul>
+                <li> <a href="../about/about.html">About</a> </li>
+                <li> <a href="home.html">Home</a></li>
+                <li> <a href="../tracker/tracker.html">Tracker</a></li>
+                <li> <a href="../account/account.html">Account</a></li>
+            </ul>
+        </nav>
       
+        <table id="main-table">
+            <thead>
+                <tr>
+                    <th>
+                        Rank
+                    </th>
+                    <th></th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Percent change 24h
+                    </th>
+                    <th>
+                        Market cap
+                    </th>
+                    <th>
+                        Details
+                    </th>
+                    <th>
+                        Track
+                    </th>
+                </tr>
+            </thead>
+            <tbody id='table-body'>
+                <tr>
+                    <td data-title='Rank'>
+
+                    </td>
+                    <td></td>
+                    <td data-title='Name'>
+
+                    </td>
+                    <td data-title='Price'>
+
+                    </td>
+                    <td data-title='percent-change'>
+
+                    </td>
+                    <td data-title='market-cap'>
+
+                    </td>
+                    <td class='details'>
+                        <a class='details-button' href='#'>
+
+                        </a>
+                    </td>
+                    <td class='track'>
+                        <a class='track-button' href='#'>
+
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>

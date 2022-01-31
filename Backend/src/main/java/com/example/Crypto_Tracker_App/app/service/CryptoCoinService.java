@@ -73,12 +73,12 @@ public class CryptoCoinService {
         while ((output = br.readLine()) != null) {
             sb.append(output);
         }
-        Set<Character> values = new HashSet<>(Arrays.asList('{', '}', ','));
-        for (int i = 0; i < sb.length(); i++) {
-            if (values.contains(sb.charAt(i))) {
-                sb.insert(i + 1, System.getProperty("line.separator"));
-            }
-        }
+//        Set<Character> values = new HashSet<>(Arrays.asList('{', '}', ','));
+//        for (int i = 0; i < sb.length(); i++) {
+//            if (values.contains(sb.charAt(i))) {
+//                sb.insert(i + 1, System.getProperty("line.separator"));
+//            }
+//        }
         return sb.toString();
     }
  

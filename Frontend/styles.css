@@ -3,7 +3,6 @@
   }
   
   body {
-    overflow-y: hidden;
     display: flex;
-    background: rgb(18, 19, 19);;
+    background: rgb(18, 19, 19);
   }
