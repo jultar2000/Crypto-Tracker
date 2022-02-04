@@ -39,9 +39,9 @@ public class User {
 
     private boolean enabled;
 
-    AppRole role;
+    private AppRole role;
 
     @ManyToMany
     @JoinColumn(name = "coins")
-    List<CryptoCoin> cryptoCoins;
+    private List<CryptoCoin> cryptoCoins;
 }

@@ -18,6 +18,4 @@ public class CryptoCoin {
 
     @Column(unique = true)
     private String coinName;
-
-
 }

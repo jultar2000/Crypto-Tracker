@@ -1,0 +1,47 @@
+
+.header {
+    background-color:#a3a3ac;
+    border-radius: 8px;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+
+body {
+    justify-content: center;
+    align-items: start;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.details-container {
+    background-color:#73797e;
+    border-radius: 8px;
+    padding-bottom: 30px;
+}
+
+.form-control {
+    width: 30%;
+    padding: 8px 12px;
+    color: #0c0d0f;
+    background-color: rgb(224, 213, 213);
+    border: 1px solid #c5ccd6;
+    border-radius: 8px;
+    font-size: large;
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.details-container .submit {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+    background-color: rgb(224, 213, 213);
+    border: none;
+    border-radius: 8px;
+    font-size: larger;
+    font-weight: 800;
+    cursor: pointer;
+    margin-left: 600px;
+}

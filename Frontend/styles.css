@@ -6,3 +6,46 @@
     display: flex;
     background: rgb(18, 19, 19);
   }
+
+  .navigation-bar {
+    background: #0b0b0c;
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    box-shadow: 0 0 2em #848cb9;
+}
+
+.navigation-bar li {
+    display: inline-block;
+    color: rgb(218, 204, 204);
+    padding: 2px 130px;
+}
+
+.navigation-bar a {
+    font-weight: 700;
+    font-size: large;
+    color: rgb(218, 204, 204);
+}
+
+::-webkit-scrollbar {
+  width: 17px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 15px rgb(248, 244, 244);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(55, 46, 182);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(166, 172, 177);
+}
+
+::-webkit-scrollbar-track-piece {
+  background: #6b7bc0;
+}

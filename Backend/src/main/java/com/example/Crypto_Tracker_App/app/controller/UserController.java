@@ -84,8 +84,8 @@ public class UserController {
         if (coin.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        if (user.getCryptoCoins().contains(coin.get())) {
-            throw new AppException("Current user doesn't track" + coin.get().getCoinName() + ".");
+        if (!user.getCryptoCoins().contains(coin.get())) {
+            throw new AppException("Current user doesn't track " + coin.get().getCoinName() + ".");
         }
         user.getCryptoCoins().remove(coin.get());
         userService.save(user);

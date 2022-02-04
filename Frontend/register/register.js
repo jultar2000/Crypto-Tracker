@@ -8,28 +8,20 @@ function setFunctionality() {
 }
 
 function registerUser() {
-    var username = document.getElementById('user-name').value;
-    var password = document.getElementById('pass').value;
-    var email = document.getElementById('email').value;
-
-    var data = {
-        "username": username,
-        "password": password,
-        "email": email,
-      };
-
-    var json = JSON.stringify(data);
-
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             console.log("OK");
         } 
     };
-
+    const data = {
+        "username": document.getElementById('user-name').value,
+        "password": document.getElementById('pass').value,
+        "email": document.getElementById('email').value,
+      };
     xhttp.open("POST", getBackendURL() + '/auth/signup', true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.send(json);
+    xhttp.send(JSON.stringify(data));
 }
 
 
