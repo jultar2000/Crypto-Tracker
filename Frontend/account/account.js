@@ -5,24 +5,17 @@ window.addEventListener('load', () => {
     setFunctionality();
 });
 
-async function fetchAndDisplayUser() {
-    const response = await fetch(getBackendURL() + '/coins/user/profile', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken')
-        },
-        body: JSON.stringify()
-    })
-        .then(response => response.json())
-        .then(data => {
-            for (const [key, value] of Object.entries(data)) {
+function fetchAndDisplayUser() {
+    axios.get(getBackendURL() + '/coins/user/profile')
+        .then(response => {
+            for (const [key, value] of Object.entries(response.data)) {
                 let input = document.getElementById(key);
                 if (input) {
                     input.value = value;
                 }
             }
-        });
+        })
+        .catch(err => console.error(err));
 }
 
 function setFunctionality() {
@@ -30,35 +23,31 @@ function setFunctionality() {
     document.getElementById('logout-button').onclick = logout;
 }
 
-async function submit() {
+function submit() {
     const data = {
         'name': document.getElementById('name').value,
         'surname': document.getElementById('surname').value,
         'age': document.getElementById('age').value
     }
-    const response = await fetch(getBackendURL() + '/coins/user/update', {
-        method: 'PUT',
+    axios.put(getBackendURL() + '/coins/user/update', data, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken')
-        },
-        body: JSON.stringify(data)
+        }
     })
-        .then(fetchAndDisplayUser());
+        .then(fetchAndDisplayUser())
+        .catch(err => console.error(err));
 }
 
-async function logout() {
+function logout() {
     const data = {
         'refreshToken': getFromSessionStorage('refreshToken'),
         'username': getFromSessionStorage('username')
     }
-    const response = await fetch(getBackendURL() + '/auth/logout', {
-        method: 'POST',
+    axios.post(getBackendURL() + '/auth/logout', data, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken')
-        },
-        body: JSON.stringify(data)
+        }
     })
-        .then(window.location.href = '../login/login.html');
+        .then(window.location.href = '../login/login.html')
+        .catch(err => console.error(err));
 }

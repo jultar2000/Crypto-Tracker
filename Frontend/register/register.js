@@ -7,17 +7,16 @@ function setFunctionality() {
     document.getElementById('register-button').onclick = register;
 }
 
-async function register() {
+function register() {
     const data = {
         'username': document.getElementById('user-name').value,
         'password': document.getElementById('pass').value,
         'email': document.getElementById('email').value
     };
-    const response = await fetch(getBackendURL() + '/auth/signup', {
-        method: 'POST',
+    axios.post(getBackendURL() + '/auth/signup', data, {
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
+        }
+    })
+    .catch(err => console.error(err));
 }

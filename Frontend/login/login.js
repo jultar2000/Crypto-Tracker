@@ -8,24 +8,23 @@ function setFunctionality() {
     document.getElementById('login-button').onclick = login;
 }
 
-async function login() {
+function login() {
     const data = {
         'username': document.getElementById('user-name').value,
         'password': document.getElementById('pass').value
     };
-    const response = await fetch(getBackendURL() + '/auth/login', {
-        method: 'POST',
+    axios.post(getBackendURL() + '/auth/login', data, {
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        }
     })
-        .then(response => response.json())
-        .then(data => {
-            sessionStorage.setItem('authenticationToken', data.authenticationToken);
-            sessionStorage.setItem('refreshToken', data.refreshToken);
-            sessionStorage.setItem('expiresAt', data.expiresAt);
-            sessionStorage.setItem('username', data.username);
+        .then(response => {
+            response = response.data;
+            sessionStorage.setItem('authenticationToken', response.authenticationToken);
+            sessionStorage.setItem('refreshToken', response.refreshToken);
+            sessionStorage.setItem('expiresAt', response.expiresAt);
+            sessionStorage.setItem('username', response.username);
             window.location.href = '../home/home.html';
-        });
+        })
+        .catch(err => console.error(err));
 }

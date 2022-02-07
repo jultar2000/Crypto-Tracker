@@ -1,28 +1,20 @@
 import {
     getBackendURL,
     createTextField,
-    getFromSessionStorage,
     createButtonField,
     clearElementChildren
 } from '../utils/utils.js';
-
 
 window.addEventListener('load', () => {
     fetchAndDisplayUserCoins();
 });
 
-async function fetchAndDisplayUserCoins() {
-    const response = await fetch(getBackendURL() + '/coins/user', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken'),
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            displayCoins(data);
+function fetchAndDisplayUserCoins() {
+    axios.get(getBackendURL() + '/coins/user')
+        .then(response => {
+            displayCoins(response.data);
         })
+        .catch(err => console.error(err));
 }
 
 function displayCoins(coins) {
@@ -49,17 +41,15 @@ function createTableRow(id, coins, i) {
     return tr;
 }
 
-async function untrack(id) {
+function untrack(id) {
     const data = {
         'coinName': id
     };
-    const response = await fetch(getBackendURL() + '/coins/user', {
-        method: 'DELETE',
+    axios.delete(getBackendURL() + '/coins/user', data, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken'),
-        },
-        body: JSON.stringify(data)
+        }
     })
-        .then(fetchAndDisplayUserCoins());
+        .then(fetchAndDisplayUserCoins())
+        .catch(err => console.error(err));
 }

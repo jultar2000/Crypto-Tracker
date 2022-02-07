@@ -1,4 +1,4 @@
-const axios = require('axios').default;
+const axiosInstance = axios.create();
 
 export function getBackendURL() {
     return 'http://localhost:8084/api';
@@ -38,53 +38,50 @@ export function createButtonField(text, action) {
     return td;
 }
 
-const instance = axios.create({
-    baseURL: getBackendURL(),
-    headers: {
-        "Content-Type": "application/json",
+axios.interceptors.request.use(
+    (config) => {
+        const token = getFromSessionStorage('authenticationToken');
+        if (token) {
+            config.headers['Authorization'] = 'Bearer ' + token;
+        }
+        return config;
     },
-});
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
-// instance.interceptors.request.use(
-//     (config) => {
-//         const token = getFromSessionStorage('authenticationToken');
-//         if (token) {
-//             config.headers['Authorization'] = 'Bearer ' + token;
-//         }
-//         return config;
-//     },
-//     (error) => {
-//         return Promise.reject(error);
-//     }
-// );
+axios.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            refreshToken();
+            return axiosInstance(originalRequest);
+        }
+        return Promise.reject(error);
+    }
+);
 
-// instance.interceptors.response.use(
-//     (res) => {
-//         return res;
-//     },
-//     async (err) => {
-//         const originalConfig = err.config;
-//         if (err.response) {
-//             // Access Token was expired
-//             if (err.response.status === 401 && !originalConfig._retry) {
-//                 originalConfig._retry = true;
-//                 try {
-//                     const rs = await refreshToken();
-//                     const { accessToken } = rs.data;
-//                     window.localStorage.setItem("accessToken", accessToken);
-//                     instance.defaults.headers.common["x-access-token"] = accessToken;
-//                     return instance(originalConfig);
-//                 } catch (_error) {
-//                     if (_error.response && _error.response.data) {
-//                         return Promise.reject(_error.response.data);
-//                     }
-//                     return Promise.reject(_error);
-//                 }
-//             }
-//             if (err.response.status === 403 && err.response.data) {
-//                 return Promise.reject(err.response.data);
-//             }
-//         }
-//         return Promise.reject(err);
-//     }
-// );
+function refreshToken() {
+    data = {
+        'refreshToken': getFromSessionStorage('refreshToken'),
+        'username': getFromSessionStorage('username')
+    };
+    axios.post(getBackendURL + 'auth/refresh/token', data, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => {
+            response = response.data;
+            sessionStorage.setItem('authenticationToken', response.authenticationToken);
+            sessionStorage.setItem('refreshToken', response.refreshToken);
+            sessionStorage.setItem('expiresAt', response.expiresAt);
+            sessionStorage.setItem('username', response.username);
+        })
+        .catch(err => console.error(err));
+}
