@@ -1,46 +1,64 @@
-import {getBackendURL, getFromLocalStorage} from '../utils/utils.js';
+import { getBackendURL, getFromSessionStorage } from '../utils/utils.js';
 
 window.addEventListener('load', () => {
-    setFunctionality();
     fetchAndDisplayUser();
+    setFunctionality();
 });
 
-function fetchAndDisplayUser() {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            //displayUser(JSON.parse(this.responseText));
-        }
-    }
-    xhttp.open("GET", getBackendURL() + '/coins/user/profile', true);
-    xhttp.setRequestHeader('Authorization', 'Bearer ' + getFromLocalStorage("authenticationToken"));
-    xhttp.send();
-}
-
-function displayUser(user) {
-    // document.getElementById('name');
-    // document.getElementById('surname');
-    // document.getElementById('age');
+async function fetchAndDisplayUser() {
+    const response = await fetch(getBackendURL() + '/coins/user/profile', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken')
+        },
+        body: JSON.stringify()
+    })
+        .then(response => response.json())
+        .then(data => {
+            for (const [key, value] of Object.entries(data)) {
+                let input = document.getElementById(key);
+                if (input) {
+                    input.value = value;
+                }
+            }
+        });
 }
 
 function setFunctionality() {
     document.getElementById('submit-button').onclick = submit;
+    document.getElementById('logout-button').onclick = logout;
 }
 
-function submit() {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if(this.readyState === 4 && this.status === 202){
+async function submit() {
+    const data = {
+        'name': document.getElementById('name').value,
+        'surname': document.getElementById('surname').value,
+        'age': document.getElementById('age').value
+    }
+    const response = await fetch(getBackendURL() + '/coins/user/update', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken')
+        },
+        body: JSON.stringify(data)
+    })
+        .then(fetchAndDisplayUser());
+}
 
-        }
+async function logout() {
+    const data = {
+        'refreshToken': getFromSessionStorage('refreshToken'),
+        'username': getFromSessionStorage('username')
     }
-    const data =  {
-        "name": document.getElementById('name').value,
-        "surname": document.getElementById('surname').value,
-        "age": document.getElementById('age').value
-    }
-    xhttp.open("PUT", getBackendURL() + "/coins/user/update", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader('Authorization', 'Bearer ' + getFromLocalStorage("authenticationToken"));
-    xhttp.send(JSON.stringify(data));
+    const response = await fetch(getBackendURL() + '/auth/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken')
+        },
+        body: JSON.stringify(data)
+    })
+        .then(window.location.href = '../login/login.html');
 }

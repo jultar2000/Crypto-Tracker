@@ -14,20 +14,20 @@ import java.util.List;
 @EqualsAndHashCode
 public class GetUserResponse {
 
-    private String email;
-
     private String name;
 
     private String surname;
 
     private int age;
 
+    private String email;
+
     public static GetUserResponse entityToDtoMapper(User user) {
         return  GetUserResponse.builder()
-                .email(user.getEmail())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .age(user.getAge())
+                .email(user.getEmail())
                 .build();
     }
 }

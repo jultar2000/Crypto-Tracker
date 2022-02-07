@@ -7,7 +7,7 @@ body {
 }
 
 table {
-    margin-top:20px;
+    margin-top: 20px;
     width: 100%;
 }
 
@@ -27,7 +27,7 @@ th {
 thead th {
     padding: 10px 10px 10px;
     font-size: large;
-    background-color: #195292 ;
+    background-color: #195292;
     color: #fff;
     border: 1px solid #499bca;
 }

@@ -1,7 +1,7 @@
 import {
     getBackendURL,
     createTextField,
-    getFromLocalStorage,
+    getFromSessionStorage,
     createButtonField,
     clearElementChildren
 } from '../utils/utils.js';
@@ -11,16 +11,18 @@ window.addEventListener('load', () => {
     fetchAndDisplayUserCoins();
 });
 
-function fetchAndDisplayUserCoins() {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            displayCoins(JSON.parse(this.responseText));
+async function fetchAndDisplayUserCoins() {
+    const response = await fetch(getBackendURL() + '/coins/user', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken'),
         }
-    }
-    xhttp.open("GET", getBackendURL() + '/coins/user', true);
-    xhttp.setRequestHeader('Authorization', 'Bearer ' + getFromLocalStorage("authenticationToken"));
-    xhttp.send();
+    })
+        .then(response => response.json())
+        .then(data => {
+            displayCoins(data);
+        })
 }
 
 function displayCoins(coins) {
@@ -37,28 +39,27 @@ function createTableRow(id, coins, i) {
     var tr = document.createElement('tr');
     var coinName = id[0].toUpperCase() + id.substring(1);
     tr.appendChild(createTextField(i));
-    tr.appendChild(createTextField("image"));
+    tr.appendChild(createTextField('image'));
     tr.appendChild(createTextField(coinName));
-    tr.appendChild(createTextField(coins[id]["usd"] + ' USD'));
-    tr.appendChild(createTextField(coins[id]["usd_24h_change"].toFixed(2) + ' %'));
-    tr.appendChild(createTextField(coins[id]["usd_market_cap"] + ' USD'));
-    tr.appendChild(createButtonField("Details", () => window.location.href = "../details/details.html"));
-    tr.appendChild(createButtonField("Untrack", () => untrackCoin(id)));
+    tr.appendChild(createTextField(coins[id]['usd'] + ' USD'));
+    tr.appendChild(createTextField(coins[id]['usd_24h_change'].toFixed(2) + ' %'));
+    tr.appendChild(createTextField(coins[id]['usd_market_cap'] + ' USD'));
+    tr.appendChild(createButtonField('Details', () => window.location.href = '../details/details.html'));
+    tr.appendChild(createButtonField('Untrack', () => untrack(id)));
     return tr;
 }
 
-function untrackCoin(id) {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 202) {
-            fetchAndDisplayUserCoins();
-        }
-    }
+async function untrack(id) {
     const data = {
-        "coinName": id
-    }
-    xhttp.open("DELETE", getBackendURL() + "/coins/user", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.setRequestHeader('Authorization', 'Bearer ' + getFromLocalStorage("authenticationToken"));
-    xhttp.send(JSON.stringify(data));
+        'coinName': id
+    };
+    const response = await fetch(getBackendURL() + '/coins/user', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getFromSessionStorage('authenticationToken'),
+        },
+        body: JSON.stringify(data)
+    })
+        .then(fetchAndDisplayUserCoins());
 }

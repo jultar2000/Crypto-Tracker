@@ -22,13 +22,13 @@ public class GetUsersResponse {
     @ToString
     @EqualsAndHashCode
     public static class UserDTO {
-        private String email;
-
         private String name;
 
         private String surname;
 
         private int age;
+
+        private String email;
     }
 
     private List<UserDTO> users;
@@ -39,10 +39,10 @@ public class GetUsersResponse {
         List<UserDTO> collect = given_users.stream()
                 .map(user ->
                         UserDTO.builder()
-                                .email(user.getEmail())
                                 .name(user.getName())
                                 .surname(user.getSurname())
                                 .age(user.getAge())
+                                .email(user.getEmail())
                                 .build())
                 .collect(Collectors.toList());
 

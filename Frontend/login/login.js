@@ -1,30 +1,31 @@
-import {getBackendURL} from '../utils/utils.js';
+import { getBackendURL } from '../utils/utils.js';
 
 window.addEventListener('load', () => {
     setFunctionality();
 });
 
 function setFunctionality() {
-    document.getElementById('login-button').onclick = loginUser;
+    document.getElementById('login-button').onclick = login;
 }
 
-function loginUser() {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            var obj = JSON.parse(xhttp.response);
-            localStorage.setItem("authenticationToken", obj.authenticationToken);
-            localStorage.setItem("refreshToken", obj.refreshToken);
-            localStorage.setItem("expiresAt", obj.expiresAt);
-            localStorage.setItem("username", obj.username);
-            window.location.href = "../home/home.html";
-        }
-    };
+async function login() {
     const data = {
-        "username": document.getElementById('user-name').value,
-        "password": document.getElementById('pass').value
-      };
-    xhttp.open("POST", getBackendURL() + '/auth/login', true);
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.send(JSON.stringify(data));
+        'username': document.getElementById('user-name').value,
+        'password': document.getElementById('pass').value
+    };
+    const response = await fetch(getBackendURL() + '/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            sessionStorage.setItem('authenticationToken', data.authenticationToken);
+            sessionStorage.setItem('refreshToken', data.refreshToken);
+            sessionStorage.setItem('expiresAt', data.expiresAt);
+            sessionStorage.setItem('username', data.username);
+            window.location.href = '../home/home.html';
+        });
 }
