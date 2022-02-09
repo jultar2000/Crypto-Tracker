@@ -1,5 +1,3 @@
-const axiosInstance = axios.create();
-
 export function getBackendURL() {
     return 'http://localhost:8084/api';
 }
@@ -57,31 +55,31 @@ axios.interceptors.response.use(
     },
     (error) => {
         const originalRequest = error.config;
-        if (error.response.status === 401 && !originalRequest._retry) {
+        if (error.response.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true;
             refreshToken();
-            return axiosInstance(originalRequest);
+            return axios(originalRequest);
         }
         return Promise.reject(error);
     }
 );
 
-function refreshToken() {
-    data = {
+async function refreshToken() {
+    const data = {
         'refreshToken': getFromSessionStorage('refreshToken'),
         'username': getFromSessionStorage('username')
     };
-    axios.post(getBackendURL + 'auth/refresh/token', data, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(response => {
-            response = response.data;
-            sessionStorage.setItem('authenticationToken', response.authenticationToken);
-            sessionStorage.setItem('refreshToken', response.refreshToken);
-            sessionStorage.setItem('expiresAt', response.expiresAt);
-            sessionStorage.setItem('username', response.username);
-        })
-        .catch(err => console.error(err));
+    try {
+        const response = await axios.post(getBackendURL() + '/auth/refresh/token', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        sessionStorage.setItem('authenticationToken', response.data.authenticationToken);
+        sessionStorage.setItem('refreshToken', response.data.refreshToken);
+        sessionStorage.setItem('expiresAt', response.data.expiresAt);
+        sessionStorage.setItem('username', response.data.username);
+    } catch(err) {
+        console.error(err);
+    }
 }

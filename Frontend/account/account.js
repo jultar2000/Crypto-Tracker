@@ -5,17 +5,18 @@ window.addEventListener('load', () => {
     setFunctionality();
 });
 
-function fetchAndDisplayUser() {
-    axios.get(getBackendURL() + '/coins/user/profile')
-        .then(response => {
-            for (const [key, value] of Object.entries(response.data)) {
-                let input = document.getElementById(key);
-                if (input) {
-                    input.value = value;
-                }
+async function fetchAndDisplayUser() {
+    try {
+        const response = await axios.get(getBackendURL() + '/coins/user/profile');
+        for (const [key, value] of Object.entries(response.data)) {
+            let input = document.getElementById(key);
+            if (input) {
+                input.value = value;
             }
-        })
-        .catch(err => console.error(err));
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 function setFunctionality() {
@@ -23,31 +24,37 @@ function setFunctionality() {
     document.getElementById('logout-button').onclick = logout;
 }
 
-function submit() {
+async function submit() {
     const data = {
         'name': document.getElementById('name').value,
         'surname': document.getElementById('surname').value,
         'age': document.getElementById('age').value
     }
-    axios.put(getBackendURL() + '/coins/user/update', data, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(fetchAndDisplayUser())
-        .catch(err => console.error(err));
+    try {
+        await axios.put(getBackendURL() + '/coins/user/update', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        fetchAndDisplayUser();
+    } catch (err) {
+        console.error(err);
+    }
 }
 
-function logout() {
+async function logout() {
     const data = {
         'refreshToken': getFromSessionStorage('refreshToken'),
         'username': getFromSessionStorage('username')
     }
-    axios.post(getBackendURL() + '/auth/logout', data, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(window.location.href = '../login/login.html')
-        .catch(err => console.error(err));
+    try {
+        const response = await axios.post(getBackendURL() + '/auth/logout', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        window.location.href = '../login/login.html';
+    } catch (err) {
+        console.error(err);
+    }
 }

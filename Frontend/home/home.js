@@ -7,15 +7,15 @@ import {
 
 window.addEventListener('load', () => {
     fetchAndDisplayAllCoins();
-
 });
 
-function fetchAndDisplayAllCoins() {
-    axios.get(getBackendURL() + '/coins/all')
-        .then(response => {
-            displayCoins(response.data);
-        })
-        .catch(err => console.error(err));
+async function fetchAndDisplayAllCoins() {
+    try {
+        const response = await axios.get(getBackendURL() + '/coins/all');
+        displayCoins(response.data);
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 function displayCoins(coins) {
@@ -40,14 +40,18 @@ function createTableRow(key, coins) {
     return tr;
 }
 
-function track(id) {
+async function track(id) {
     const data = {
         'coinName': id
     };
-    axios.put(getBackendURL() + '/coins/user', data, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .catch(err => console.error(err));
+    try {
+        await axios.put(getBackendURL() + '/coins/user', data, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        window.alert('Coin is now being tracked!');
+    } catch (err) {
+        console.error(err);
+    }
 }

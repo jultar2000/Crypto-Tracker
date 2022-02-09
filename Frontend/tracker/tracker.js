@@ -9,12 +9,13 @@ window.addEventListener('load', () => {
     fetchAndDisplayUserCoins();
 });
 
-function fetchAndDisplayUserCoins() {
-    axios.get(getBackendURL() + '/coins/user')
-        .then(response => {
-            displayCoins(response.data);
-        })
-        .catch(err => console.error(err));
+async function fetchAndDisplayUserCoins() {
+    try {
+        const response = await axios.get(getBackendURL() + '/coins/user');
+        displayCoins(response.data);
+    } catch (err) {
+        console.error(err)
+    }
 }
 
 function displayCoins(coins) {
@@ -41,15 +42,18 @@ function createTableRow(id, coins, i) {
     return tr;
 }
 
-function untrack(id) {
+async function untrack(id) {
     const data = {
         'coinName': id
     };
-    axios.delete(getBackendURL() + '/coins/user', data, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(fetchAndDisplayUserCoins())
-        .catch(err => console.error(err));
+    try {
+        await axios.delete(getBackendURL() + '/coins/user', {
+            headers: {
+                'Content-Type': 'application/json'
+            }, data
+        });
+        fetchAndDisplayUserCoins()
+    } catch (err) {
+        console.error(err);
+    }
 }
