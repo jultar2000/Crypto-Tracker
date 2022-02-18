@@ -38,7 +38,6 @@ public class ManagementController {
         return ResponseEntity.ok(response);
     }
 
-
     @PutMapping
     @PreAuthorize("hasAuthority('db:update')")
     public ResponseEntity<Void> updateDB() throws JSONException, IOException {

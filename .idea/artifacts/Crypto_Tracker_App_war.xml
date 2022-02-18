@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Crypto_Tracker_App:war">
+    <output-path>$PROJECT_DIR$/Backend/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>false</exploded>
+        <module>Crypto_Tracker_App</module>
+        <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
+      </options>
+    </properties>
+    <root id="archive" name="Crypto_Tracker_App-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="Crypto_Tracker_App:war exploded" />
+    </root>
+  </artifact>
+</component>

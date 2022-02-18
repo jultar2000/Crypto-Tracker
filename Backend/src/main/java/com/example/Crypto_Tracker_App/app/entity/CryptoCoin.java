@@ -1,8 +1,10 @@
 package com.example.Crypto_Tracker_App.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +20,5 @@ public class CryptoCoin {
 
     @Column(unique = true)
     private String coinName;
+
 }
