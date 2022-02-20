@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Crypto_Tracker_App" target="17" />
+      <module name="Crypto_Tracker_App" target="11" />
       <module name="Frontend" target="1.5" />
     </bytecodeTargetLevel>
   </component>
