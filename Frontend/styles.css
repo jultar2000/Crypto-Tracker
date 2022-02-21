@@ -9,7 +9,10 @@
 
   .navigation-bar {
     background: #0b0b0c;
-    padding: 1.5em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    padding-left: 5em;
+    padding-right: 5em;
     display: flex;
     flex-direction: column;
     border-radius: 30px;

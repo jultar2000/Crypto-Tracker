@@ -27,6 +27,7 @@ function displayCoins(coins) {
 }
 
 function createTableRow(key, coins) {
+    var modal = document.getElementById("modal");
     var tr = document.createElement('tr');
     var object = coins[key];
     tr.appendChild(createTextField(object['market_cap_rank']));
@@ -35,7 +36,7 @@ function createTableRow(key, coins) {
     tr.appendChild(createTextField(object['current_price'] + ' USD'));
     tr.appendChild(createTextField(object['price_change_percentage_24h'].toFixed(2) + ' %'));
     tr.appendChild(createTextField(object['market_cap'] + ' USD'));
-    tr.appendChild(createButtonField('Details', () => window.location.href = '../details/details.html'));
+    tr.appendChild(createButtonField('Details', () => modal.style.display ="block"));
     tr.appendChild(createButtonField('Track', () => track(object['id'])));
     return tr;
 }

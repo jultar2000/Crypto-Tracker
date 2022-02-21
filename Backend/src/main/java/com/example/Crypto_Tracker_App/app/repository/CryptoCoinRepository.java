@@ -8,5 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface CryptoCoinRepository extends JpaRepository<CryptoCoin, Long> {
-    Optional<CryptoCoin> findByCoinName(String cryptoName);
+    Optional<CryptoCoin> findByCoinName(String coinName);
+
+    boolean existsByCoinName(String coinName);
+
+    void deleteByCoinName(String coinName);
 }

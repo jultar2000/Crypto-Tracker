@@ -8,6 +8,8 @@
 
 body {
     overflow-y: scroll;
+    justify-content: center;
+    align-items: start;
     scroll-behavior: smooth;
 }
 
@@ -26,7 +28,7 @@ body {
     border: 1px solid #c5ccd6;
     border-radius: 8px;
     font-size: large;
-    display: grid;
+    display: flex;
 }
 
 .details-container .submit {

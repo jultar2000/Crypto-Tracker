@@ -47,7 +47,7 @@ public class CryptoCoinService {
                 "&include_last_updated_at=true");
         sb.setLength(0);
         BufferedReader br = sendRequest(url);
-        return readAndModifyOutput(sb, br);
+        return readOutput(sb, br);
     }
 
     public String getAllCoins() throws IOException {
@@ -59,7 +59,7 @@ public class CryptoCoinService {
                 "&page=1" +
                 "&sparkline=false");
         BufferedReader br = sendRequest(url);
-        return readAndModifyOutput(sb, br);
+        return readOutput(sb, br);
     }
 
     private BufferedReader sendRequest(URL url) throws IOException {
@@ -68,20 +68,14 @@ public class CryptoCoinService {
         return new BufferedReader(new InputStreamReader(con.getInputStream()));
     }
 
-    private String readAndModifyOutput(StringBuilder sb, BufferedReader br) throws IOException {
+    private String readOutput(StringBuilder sb, BufferedReader br) throws IOException {
         String output;
         while ((output = br.readLine()) != null) {
             sb.append(output);
         }
-//        Set<Character> values = new HashSet<>(Arrays.asList('{', '}', ','));
-//        for (int i = 0; i < sb.length(); i++) {
-//            if (values.contains(sb.charAt(i))) {
-//                sb.insert(i + 1, System.getProperty("line.separator"));
-//            }
-//        }
         return sb.toString();
     }
- 
+
     public void updateDatabase() throws IOException, JSONException {
         JSONArray jsonarray = null;
         String output;
@@ -101,17 +95,24 @@ public class CryptoCoinService {
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
                 coinName = jsonobject.getString("id");
-                saveWithName(coinName);
+                if (!coinExists(coinName)) {
+                    saveWithName(coinName);
+                }
             }
         }
     }
-    
+
     @Transactional
-    public void saveWithName(String coinName){
+    public void saveWithName(String coinName) {
         CryptoCoin coin = CryptoCoin.builder()
                 .coinName(coinName)
                 .build();
         cryptoCoinRepository.save(coin);
+    }
+
+    @Transactional
+    public void deleteWithName(String coinName) {
+        cryptoCoinRepository.deleteByCoinName(coinName);
     }
 
     @Transactional
@@ -122,6 +123,10 @@ public class CryptoCoinService {
     @Transactional
     public void delete(CryptoCoin cryptoCoin) {
         cryptoCoinRepository.delete(cryptoCoin);
+    }
+
+    boolean coinExists(String coinName) {
+        return cryptoCoinRepository.existsByCoinName(coinName);
     }
 
     public Optional<CryptoCoin> findCoin(String coinName) {
