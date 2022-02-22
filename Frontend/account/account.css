@@ -25,7 +25,7 @@ body {
     padding: 8px 12px;
     color: #0c0d0f;
     background-color: rgb(224, 213, 213);
-    border: 1px solid #c5ccd6;
+    border: 1px solid ;
     border-radius: 8px;
     font-size: large;
     display: flex;
@@ -43,7 +43,7 @@ body {
     font-size: larger;
     font-weight: 800;
     cursor: pointer;
-    left: 600px;
+    left: 45%;
 }
 
 .details-container .logout {

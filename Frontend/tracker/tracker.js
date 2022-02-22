@@ -53,6 +53,7 @@ async function untrack(id) {
             }, data
         });
         fetchAndDisplayUserCoins()
+        window.alert('The coin is now untracked!');
     } catch (err) {
         console.error(err);
     }

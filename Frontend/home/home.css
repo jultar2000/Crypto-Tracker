@@ -1,54 +1,106 @@
 body {
-    justify-content: center;
-    align-items: start;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
+  justify-content: center;
+  align-items: start;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
-table {
-    margin-top: 20px;
-    width: 100%;
+#main-table {
+  margin-top: 20px;
+  width: 100%;
 }
 
 td {
-    padding: 10px 10px 10px;
-    text-align: center;
-    color: rgb(218, 204, 204);
-    border: 3px solid #2d5166;
+  padding: 10px 10px 10px;
+  text-align: center;
+  color: rgb(218, 204, 204);
+  border: 3px solid #2d5166;
 }
 
 th {
-    text-align: left;
-    font-weight: 700;
-    color: rgb(218, 204, 204);
+  text-align: left;
+  font-weight: 700;
+  color: rgb(218, 204, 204);
+
 }
 
 thead th {
-    padding: 10px 10px 10px;
-    font-size: large;
-    background-color: #195292;
-    color: #fff;
-    border: 1px solid #499bca;
+  padding: 10px 10px 10px;
+  font-size: large;
+  background-color: #195292;
+  color: #fff;
+  border: 1px solid #499bca;
 }
 
 .details-button {
-    line-height: 1;
-    display: inline-block;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border-radius: 5px;
-    color: #fff;
-    padding: 5px;
-    background-color: #6b7bc0;
+  line-height: 1;
+  display: inline-block;
+  font-size: 1.2rem;
+  text-decoration: none;
+  border-radius: 5px;
+  color: #fff;
+  padding: 5px;
+  background-color: #6b7bc0;
 }
 
 .track-button {
-    line-height: 1;
-    display: inline-block;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border-radius: 5px;
-    color: #fff;
-    padding: 5px;
-    background-color: #6b7bc0;
+  line-height: 1;
+  display: inline-block;
+  font-size: 1.2rem;
+  text-decoration: none;
+  border-radius: 5px;
+  color: #fff;
+  padding: 5px;
+  background-color: #6b7bc0;
 }
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  border: 1px solid black;
+  border-radius: 10px;
+  z-index: 10;
+  background-color: #195292;
+  width: 75%;
+  height: 85%;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.modal-header .title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-header .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+#details-table {
+  font-size: large;
+  border: none;
+  border-spacing: 0.7em;
+}
+

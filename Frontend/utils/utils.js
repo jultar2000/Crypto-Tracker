@@ -36,6 +36,28 @@ export function createButtonField(text, action) {
     return td;
 }
 
+export function createButtonFieldWithModal(text, modal, closeButton) {
+    const td = createButtonField(text, () =>{
+        modal.classList.add('active');
+    });
+    closeButton.onclick = function() {
+        modal.classList.remove('active');
+    }
+    return td;
+}
+
+export function createModal(dt, object) {
+        dt.rows[0].appendChild(createTextField(object['market_cap_rank']));
+        dt.rows[1].appendChild(createTextField(object['name']));
+        dt.rows[2].appendChild(createTextField(object['current_price'] + ' USD'));
+        dt.rows[3].appendChild(createTextField(object['price_change_percentage_24h'].toFixed(2) + ' %'));
+        dt.rows[4].appendChild(createTextField(object['market_cap'] + ' USD')); 
+        dt.rows[5].appendChild(createTextField(object['total_volume']));
+        dt.rows[6].appendChild(createTextField(object['circulating_supply']))
+        dt.rows[7].appendChild(createTextField(object['total_supply']));
+        dt.rows[8].appendChild(createTextField(object['ath'] + ' USD'));  
+}
+
 axios.interceptors.request.use(
     (config) => {
         const token = getFromSessionStorage('authenticationToken');
