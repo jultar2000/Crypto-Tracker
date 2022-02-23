@@ -1,18 +1,19 @@
 import {
+    createImageField,
     createButtonFieldWithDetailsModal,
     getBackendURL,
     createTextField,
     createButtonFieldWithAtribute,
     clearElementChildren
-} from '../utils/utils.js';
+} from "../utils/utils.js";
 
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
     fetchAndDisplayAllCoins();
 });
 
 async function fetchAndDisplayAllCoins() {
     try {
-        const response = await axios.get(getBackendURL() + '/coins/all');
+        const response = await axios.get(getBackendURL() + "/coins/all");
         displayCoins(response.data);
     } catch (err) {
         console.error(err);
@@ -20,7 +21,7 @@ async function fetchAndDisplayAllCoins() {
 }
 
 function displayCoins(coins) {
-    let tableBody = document.getElementById('table-body');
+    let tableBody = document.getElementById("table-body");
     clearElementChildren(tableBody);
     Object.keys(coins).forEach(key => {
         tableBody.appendChild(createTableRow(key, coins));
@@ -28,32 +29,32 @@ function displayCoins(coins) {
 }
 
 function createTableRow(key, coins) {
-    let tr = document.createElement('tr');
+    let tr = document.createElement("tr");
     let mt = document.getElementById("main-table");
     let object = coins[key];
 
-    tr.appendChild(createTextField(object['market_cap_rank']));
-    tr.appendChild(createTextField('image'));
-    tr.appendChild(createTextField(object['name']));
-    tr.appendChild(createTextField(object['current_price'] + ' USD'));
-    tr.appendChild(createTextField(object['price_change_percentage_24h'].toFixed(2) + ' %'));
-    tr.appendChild(createTextField(object['market_cap'] + ' USD'));
-    tr.appendChild(createButtonFieldWithDetailsModal('Details', object, mt));
-    tr.appendChild(createButtonFieldWithAtribute('Track', "track-button", () => track(object['id'])));
+    tr.appendChild(createTextField(object["market_cap_rank"]));
+    tr.appendChild(createImageField(object["image"]));
+    tr.appendChild(createTextField(object["name"]));
+    tr.appendChild(createTextField(object["current_price"] + " USD"));
+    tr.appendChild(createTextField(object["price_change_percentage_24h"].toFixed(2) + " %"));
+    tr.appendChild(createTextField(object["market_cap"] + " USD"));
+    tr.appendChild(createButtonFieldWithDetailsModal("Details", object, mt));
+    tr.appendChild(createButtonFieldWithAtribute("Track", "track-button", () => track(object["id"])));
     return tr;
 }
 
 async function track(id) {
     const data = {
-        'coinName': id
+        "coinName": id
     };
     try {
-        await axios.put(getBackendURL() + '/coins/user', data, {
+        await axios.put(getBackendURL() + "/coins/user", data, {
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             }
         });
-        window.alert('The coin is now tracked!');
+        window.alert("The coin is now tracked!");
     } catch (err) {
         console.error(err);
     }

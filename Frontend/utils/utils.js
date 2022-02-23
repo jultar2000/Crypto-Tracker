@@ -1,5 +1,5 @@
 export function getBackendURL() {
-    return 'http://localhost:8084/api';
+    return "http://localhost:8084/api";
 }
 
 export function clearElementChildren(element) {
@@ -17,7 +17,7 @@ export function getFromSessionStorage(type) {
 }
 
 export function createTextField(text) {
-    const td = document.createElement('td');
+    const td = document.createElement("td");
     td.appendChild(document.createTextNode(text));
     return td;
 }
@@ -27,29 +27,39 @@ export function setTextNode(id, text) {
     element.appendChild(document.createTextNode(text));
 }
 
+export function createImageField(image_src) {
+    const td = document.createElement("td");
+    const img = document.createElement("img");
+    img.setAttribute("width", "75");
+    img.setAttribute("height", "75");
+    img.setAttribute("src", image_src);
+    td.appendChild(img);
+    return td;
+}
+
 export function createButtonField(text, action) {
-    const td = document.createElement('td');
-    const button = document.createElement('button');
+    const td = document.createElement("td");
+    const button = document.createElement("button");
     button.appendChild(document.createTextNode(text));
     td.appendChild(button);
-    button.addEventListener('click', action);
+    button.addEventListener("click", action);
     return td;
 }
 
 export function createButtonFieldWithAtribute(text, atributeName, action) {
-    const td = document.createElement('td');
-    const button = document.createElement('button');
+    const td = document.createElement("td");
+    const button = document.createElement("button");
     button.appendChild(document.createTextNode(text));
     button.setAttribute("class", atributeName);
     td.appendChild(button);
-    button.addEventListener('click', action);
+    button.addEventListener("click", action);
     return td;
 }
 
 export function createButtonFieldWithDetailsModal(text, object, mt) {
     let modal = createDetailsModal(object, mt);
-    const td = createButtonFieldWithAtribute(text, "details-button",  () => {
-        modal.classList.add('active');
+    const td = createButtonFieldWithAtribute(text, "details-button", () => {
+        modal.classList.add("active");
     });
     td.setAttribute("class", "details-button");
     return td;
@@ -75,7 +85,7 @@ function createDetailsModal(object, mt) {
     modal_container.appendChild(dt);
 
     close_button.onclick = function () {
-        modal_container.classList.remove('active');
+        modal_container.classList.remove("active");
     }
 
     fillUpDetailsModal(dt, object);
@@ -99,30 +109,30 @@ function createDetailsTable() {
 }
 
 function addNewDataToTable(table, text) {
-    let tr = document.createElement('tr');
-    let th = document.createElement('th');
+    let tr = document.createElement("tr");
+    let th = document.createElement("th");
     th.appendChild(document.createTextNode(text));
     tr.appendChild(th);
     table.appendChild(tr);
 }
 
 function fillUpDetailsModal(dt, object) {
-    dt.rows[0].appendChild(createTextField(object['market_cap_rank']));
-    dt.rows[1].appendChild(createTextField(object['name']));
-    dt.rows[2].appendChild(createTextField(object['current_price'] + ' USD'));
-    dt.rows[3].appendChild(createTextField(object['price_change_percentage_24h'].toFixed(2) + ' %'));
-    dt.rows[4].appendChild(createTextField(object['market_cap'] + ' USD'));
-    dt.rows[5].appendChild(createTextField(object['total_volume']));
-    dt.rows[6].appendChild(createTextField(object['circulating_supply']))
-    dt.rows[7].appendChild(createTextField(object['total_supply']));
-    dt.rows[8].appendChild(createTextField(object['ath'] + ' USD'));
+    dt.rows[0].appendChild(createTextField(object["market_cap_rank"]));
+    dt.rows[1].appendChild(createTextField(object["name"]));
+    dt.rows[2].appendChild(createTextField(object["current_price"] + " USD"));
+    dt.rows[3].appendChild(createTextField(object["price_change_percentage_24h"].toFixed(2) + " %"));
+    dt.rows[4].appendChild(createTextField(object["market_cap"] + " USD"));
+    dt.rows[5].appendChild(createTextField(object["total_volume"]));
+    dt.rows[6].appendChild(createTextField(object["circulating_supply"]))
+    dt.rows[7].appendChild(createTextField(object["total_supply"]));
+    dt.rows[8].appendChild(createTextField(object["ath"] + " USD"));
 }
 
 axios.interceptors.request.use(
     (config) => {
-        const token = getFromSessionStorage('authenticationToken');
+        const token = getFromSessionStorage("authenticationToken");
         if (token) {
-            config.headers['Authorization'] = 'Bearer ' + token;
+            config.headers["Authorization"] = "Bearer " + token;
         }
         return config;
     },
@@ -148,19 +158,19 @@ axios.interceptors.response.use(
 
 async function refreshToken() {
     const data = {
-        'refreshToken': getFromSessionStorage('refreshToken'),
-        'username': getFromSessionStorage('username')
+        "refreshToken": getFromSessionStorage("refreshToken"),
+        "username": getFromSessionStorage("username")
     };
     try {
-        const response = await axios.post(getBackendURL() + '/auth/refresh/token', data, {
+        const response = await axios.post(getBackendURL() + "/auth/refresh/token", data, {
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             }
         });
-        sessionStorage.setItem('authenticationToken', response.data.authenticationToken);
-        sessionStorage.setItem('refreshToken', response.data.refreshToken);
-        sessionStorage.setItem('expiresAt', response.data.expiresAt);
-        sessionStorage.setItem('username', response.data.username);
+        sessionStorage.setItem("authenticationToken", response.data.authenticationToken);
+        sessionStorage.setItem("refreshToken", response.data.refreshToken);
+        sessionStorage.setItem("expiresAt", response.data.expiresAt);
+        sessionStorage.setItem("username", response.data.username);
     } catch (err) {
         console.error(err);
     }
