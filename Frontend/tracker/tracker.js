@@ -1,7 +1,7 @@
 import {
     getBackendURL,
     createTextField,
-    createButtonField,
+    createButtonFieldWithAtribute,
     clearElementChildren
 } from '../utils/utils.js';
 
@@ -37,8 +37,8 @@ function createTableRow(id, coins, i) {
     tr.appendChild(createTextField(coins[id]['usd'] + ' USD'));
     tr.appendChild(createTextField(coins[id]['usd_24h_change'].toFixed(2) + ' %'));
     tr.appendChild(createTextField(coins[id]['usd_market_cap'] + ' USD'));
-    tr.appendChild(createButtonField('Details', () => window.location.href = '../details/details.html'));
-    tr.appendChild(createButtonField('Untrack', () => untrack(id)));
+    tr.appendChild(createButtonFieldWithAtribute('Details', "details-button", () => window.location.href = '../details/details.html'));
+    tr.appendChild(createButtonFieldWithAtribute('Untrack',"track-button", () => untrack(id)));
     return tr;
 }
 

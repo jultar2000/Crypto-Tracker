@@ -21,7 +21,6 @@ th {
   text-align: left;
   font-weight: 700;
   color: rgb(218, 204, 204);
-
 }
 
 thead th {
@@ -30,28 +29,6 @@ thead th {
   background-color: #195292;
   color: #fff;
   border: 1px solid #499bca;
-}
-
-.details-button {
-  line-height: 1;
-  display: inline-block;
-  font-size: 1.2rem;
-  text-decoration: none;
-  border-radius: 5px;
-  color: #fff;
-  padding: 5px;
-  background-color: #6b7bc0;
-}
-
-.track-button {
-  line-height: 1;
-  display: inline-block;
-  font-size: 1.2rem;
-  text-decoration: none;
-  border-radius: 5px;
-  color: #fff;
-  padding: 5px;
-  background-color: #6b7bc0;
 }
 
 *, *::after, *::before {
@@ -69,7 +46,7 @@ thead th {
   z-index: 10;
   background-color: #195292;
   width: 75%;
-  height: 85%;
+  height: 90%;
 }
 
 .modal.active {
@@ -101,6 +78,5 @@ thead th {
 #details-table {
   font-size: large;
   border: none;
-  border-spacing: 0.7em;
+  border-spacing: 0.5em;
 }
-

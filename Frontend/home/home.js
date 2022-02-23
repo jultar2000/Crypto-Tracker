@@ -1,9 +1,8 @@
 import {
-    createModal,
-    createButtonFieldWithModal,
+    createButtonFieldWithDetailsModal,
     getBackendURL,
     createTextField,
-    createButtonField,
+    createButtonFieldWithAtribute,
     clearElementChildren
 } from '../utils/utils.js';
 
@@ -30,22 +29,17 @@ function displayCoins(coins) {
 
 function createTableRow(key, coins) {
     let tr = document.createElement('tr');
-    let modal = document.getElementById("modal");
-    let closeButton = document.getElementById("close-button");
-    let dt = document.getElementById('details-table')
+    let mt = document.getElementById("main-table");
     let object = coins[key];
-    if(object['name'] == 'Bitcoin'){
-        createModal(dt, object);
-    }
-  
+
     tr.appendChild(createTextField(object['market_cap_rank']));
     tr.appendChild(createTextField('image'));
     tr.appendChild(createTextField(object['name']));
     tr.appendChild(createTextField(object['current_price'] + ' USD'));
     tr.appendChild(createTextField(object['price_change_percentage_24h'].toFixed(2) + ' %'));
     tr.appendChild(createTextField(object['market_cap'] + ' USD'));
-    tr.appendChild(createButtonFieldWithModal('Details', modal, closeButton));
-    tr.appendChild(createButtonField('Track', () => track(object['id'])));
+    tr.appendChild(createButtonFieldWithDetailsModal('Details', object, mt));
+    tr.appendChild(createButtonFieldWithAtribute('Track', "track-button", () => track(object['id'])));
     return tr;
 }
 
