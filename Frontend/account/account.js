@@ -53,6 +53,7 @@ async function logout() {
                 "Content-Type": "application/json",
             }
         });
+        sessionStorage.clear();
         window.location.href = "../login/login.html";
     } catch (err) {
         console.error(err);
